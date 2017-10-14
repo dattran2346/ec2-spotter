@@ -1,13 +1,18 @@
 # Parameters defaults
 # The size of the root volume, in GB.
-volume_size=128
+volume_size=64
 # The name of the key file we'll use to log into the instance. create_vpc.sh sets it to aws-key-fast-ai
-name=fast-ai
-key_name=aws-key-$name
-# Type of instance to launch
-ec2spotter_instance_type=p2.xlarge
+name=eyeq
+key_name=eyeq-awskey-1
+# TODO: Change type of instance to launch
+ec2spotter_instance_type=g3.4xlarge
 # In USD, the maximum price we are willing to pay.
 bid_price=0.5
+#image type
+ami=ami-8fcc75ec
+# TODO: Insert
+subnetId=subnet-13
+securityGroupId=sg-13
 
 # Read the input args
 while [[ $# -gt 0 ]]
@@ -52,27 +57,26 @@ done
 # Create a config file to launch the instance.
 cat >specs.tmp <<EOF 
 {
-  "ImageId" : "$ami",
+  "ImageId": "$ami",
   "InstanceType": "$ec2spotter_instance_type",
-  "KeyName" : "$key_name",
-  "EbsOptimized": true,
+  "KeyName": "$key_name",
   "BlockDeviceMappings": [
     {
       "DeviceName": "/dev/sda1",
       "Ebs": {
-        "DeleteOnTermination": false, 
+        "DeleteOnTermination": false,
         "VolumeType": "gp2",
-        "VolumeSize": $volume_size 
+        "VolumeSize": $volume_size
       }
     }
   ],
   "NetworkInterfaces": [
-      {
-        "DeviceIndex": 0,
-        "SubnetId": "${subnetId}",
-        "Groups": [ "${securityGroupId}" ],
-        "AssociatePublicIpAddress": true
-      }
+    {
+      "DeviceIndex": 0,
+      "SubnetId": "${subnetId}",
+      "Groups": [ "${securityGroupId}" ],
+      "AssociatePublicIpAddress": true
+    }
   ]
 }
 EOF

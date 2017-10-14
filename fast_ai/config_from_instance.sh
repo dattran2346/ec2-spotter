@@ -1,6 +1,6 @@
 # settings
-export name="fast-ai"
-export keyName="aws-key-$name"
+export name="eyeq"
+export keyName="eyeq-awskey-1"
 export maxPricePerHour=0.5
 
 # Set current dir to working dir - http://stackoverflow.com/a/10348989/277871

@@ -19,6 +19,10 @@ aws ec2 wait instance-running --instance-ids $instance_id
 
 echo Spot instance ID: $instance_id 
 
+# Change the instance name
+aws ec2 create-tags --resources $instance_id --tags --tags Key=Name,Value=eyeq-gpu-machine
+
+
 echo 'Please allow the root volume swap script a few minutes to finish.'
 if [ "x$ec2spotter_elastic_ip" = "x" ]
 then
@@ -29,8 +33,8 @@ else
 	export ip=`aws ec2 describe-addresses --allocation-ids $ec2spotter_elastic_ip --output text --query 'Addresses[0].PublicIp'`
 fi	
 
-export name=fast-ai
-if [ "$ec2spotter_key_name" = "aws-key-$name" ] 
+export name=eyeq
+if [ "$ec2spotter_key_name" = "eyeq-awskey-1" ] 
 then
-	echo Then connect to your instance: ssh -i ~/.ssh/aws-key-$name.pem ubuntu@$ip
+	echo Then connect to your instance: ssh -i ~/.ssh/eyeq-awskey-1.pem ubuntu@$ip
 fi
